@@ -1,0 +1,221 @@
+/* ========== Base / Reset ========== */
+* {
+  box-sizing: border-box;
+}
+
+html, header, body {
+  margin: 0;
+  padding: 0;
+
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+  background: #fff;
+}
+
+/* ========== Typography ========== */
+.site-header h1 {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-weight: 400;
+  font-size: clamp(42px, 4.5vw, 82px); 
+  text-align: left;
+  padding-left: 0.5rem;
+  margin: 0;
+}
+
+.list-element-title h2 {
+  font-size: clamp(20px, 2.5vw, 28px);
+  margin-bottom: 0.5rem;
+}
+
+/* ========== Layout ========== */
+.container {
+  width: 100%;
+  padding: 0.5rem;
+  padding-top: 0;
+}
+
+.list-element {
+  display: grid;
+  /* Left content capped, right sidebar fixed-ish width, with big space between on wide screens */
+  grid-template-columns: minmax(0, 52vw) minmax(240px, 35vw);
+  justify-content: space-between;  /* pushes columns to far left / far right */
+   border-top: 3px solid #083b0f; 
+  padding-bottom: 1rem;
+}
+
+
+
+.list-element-no-grid {
+   border-top: 3px solid #083b0f; 
+  padding-bottom: 1rem;
+}
+
+/* Title spans both columns */
+.list-element-title {
+  grid-column: 1 / -1;
+}
+
+/* Left column: your existing video grid stays intact */
+.list-element-body {
+  grid-column: 1; /* left column */
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+}
+
+/* Make the 16:9 video span the whole left column width */
+.list-element-body .wide {
+  grid-column: 1 / -1;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+/* Right column: comment sidebar */
+.list-element-comment {
+  grid-column: 2; /* right column */
+  align-self: start;           /* top-align next to content */
+  /*position: sticky;            optional: stays visible while scrolling this section */
+  /*top: 1rem;                    distance from top when sticky */
+  max-width: 48ch;             /* keep readable line length */
+}
+
+.poem {
+    margin-top: 2rem;
+    border: 2px solid #083b0f;
+    text-align: centre;
+
+}
+
+.box {
+    border: 2px solid #083b0f;
+      /* size of the box: adjust as needed */
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    /* vertical center of the content */
+    align-items: flex-start;    /* keep the content left-aligned */
+    text-align: left;           /* lines stay left-aligned */
+    
+    gap: 0;               /* small space between h4 and p */
+    padding: 0;                 /* no inner padding unless you want some */
+    margin: 0;                  /* no outer margin */
+    }
+
+
+/* remove the default top/bottom margins that caused the “extra spacing” */
+.box .in-box {
+  margin: 0;
+  padding-left: 1vw;
+
+}
+
+.no-border {
+    border-top: 0;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* Responsive videos (unchanged) */
+.video-9x16, .video-16x9 {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16; /* override below for 16:9 */
+  overflow: hidden;
+}
+.video-16x9 { aspect-ratio: 16 / 9; }
+.video-9x16 iframe, .video-16x9 iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+}
+
+/* Mobile: stack to 1 column so sidebar appears below content */
+@media (max-width: 800px) {
+  .list-element {
+    grid-template-columns: 1fr;
+  }
+  .list-element-comment {
+    grid-column: 1;
+    position: static; /* disable sticky on small screens if you want */
+    margin-top: .5rem;
+  }
+}
+
+
+
+/* Trio layout: tall on the left, two stacked on the right */
+.image-trio {
+  display: grid;
+  grid-template-columns: 1fr 1fr;              /* two columns */
+  grid-template-rows: auto auto;               /* two rows */
+  grid-template-areas:
+    "tall top"
+    "tall bottom";
+    /* control spacing precisely */
+  column-gap: 2rem;       /* no space between tall and right column */
+  row-gap: 2rem;          /* no space between top and bottom */
+  /* or: row-gap: 2px; if you want a hairline */
+
+  
+}
+
+/* remove default figure margins (the usual culprit) */
+.image-trio figure,
+.image-trio .img {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Place each item */
+.image-trio .tall   { grid-area: tall; }
+.image-trio .top    { grid-area: top; }
+.image-trio .bottom { grid-area: bottom; }
+
+/* Make images responsive */
+.image-trio img {
+  display: block;   /* removes inline baseline gap */
+  width: 100%;
+  height: 100%;     /* fill vertical space */
+  object-fit: cover;/* crop to fill (use 'contain' if you prefer no crop) */
+}
+
+
+/* Mobile: stack all three */
+@media (max-width: 800px) {
+  .image-trio {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "tall"
+      "top"
+      "bottom";
+  }
+}
+
+
+/* Make the right-hand column wider for photo sidebars in THIS section */
+.sidebar-photos {
+  /* left grows, right is reasonably wide for images */
+  grid-template-columns: 1fr clamp(300px, 40vw, 760px);
+}
+
+/* Let the sidebar box actually use the column width */
+.sidebar-photos .list-element-comment {
+  max-width: none;          /* override the 32ch text cap */
+  justify-self: stretch;    /* fill the column (not centered) */
+}
+
+/* Make images fill the sidebar column width */
+.sidebar-photos .list-element-comment figure { margin: 0 0 0.5rem; }
+.sidebar-photos .list-element-comment img {
+  display: block;
+  width: 100%;
+  height: auto;             /* keep natural aspect ratio */
+}
+
+/* Optional: tighten the paragraph spacing in the sidebar */
+.sidebar-photos .list-element-comment p { margin: 0 0 0.5rem; }
